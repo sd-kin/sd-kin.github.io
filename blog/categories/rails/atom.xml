@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Rails | Putshello developer blog]]></title>
+  <link href="http://sd-kin.github.io/blog/categories/rails/atom.xml" rel="self"/>
+  <link href="http://sd-kin.github.io/"/>
+  <updated>2017-03-25T09:01:23+03:00</updated>
+  <id>http://sd-kin.github.io/</id>
+  <author>
+    <name><![CDATA[Dmitry Sidorov]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Rails With Paperclip and GCS]]></title>
+    <link href="http://sd-kin.github.io/blog/2017/03/25/using-paperclclip-with-google-cloud-storage-and-custom-subdomain-to-serve-static-assets/"/>
+    <updated>2017-03-25T08:39:57+03:00</updated>
+    <id>http://sd-kin.github.io/blog/2017/03/25/using-paperclclip-with-google-cloud-storage-and-custom-subdomain-to-serve-static-assets</id>
+    <content type="html"><![CDATA[<h2>How to serve images from your custom subdomain using paperclip with google cloud as storage.</h2>
+
+<ol>
+<li>Register own domain name.</li>
+<li>Create Google cloud storage account.</li>
+<li>Create your GCS bucket with name of your subdomain for serving static files, for example <code>static.my_domain.com</code>.</li>
+<li>Add your custom domain to google account and verify ownership.</li>
+<li>Create CNAME record for your custom subdomain for serving static files linking to <code>c.storage.googleapis.com</code> For example: <code>static.my_domain.com CNAME c.storage.googleapis.com</code>. <a href="https://cloud.google.com/storage/docs/xml-api/reference-uris">Documentation</a></li>
+<li>Add paperclip to your project as shown in offitial documentation.</li>
+<li>Add gem <code>fog</code> to your gemfile.</li>
+<li>Configure paperclip in <code>config/environments/production.rb</code>
+<code>ruby
+config.paperclip_defaults = {
+ storage: :fog,
+ fog_credentials: {
+   provider: 'Google',
+   google_storage_access_key_id: ENV['GOOGLE_STORAGE_ACCESS_KEY_ID'],
+   google_storage_secret_access_key: ENV['GOOGLE_STORAGE_SECRET_ACCESS_KEY'],
+   path_style: true
+ },
+ fog_directory: ENV['GOOGLE_STORAGE_BUCKET_NAME'],
+ fog_host: "http://#{ENV['GOOGLE_STORAGE_BUCKET_NAME']}"
+}
+</code>
+<code>path_style: true</code> needed to pass SSL sertificate check. <a href="https://github.com/fog/fog/issues/2834">Reference.</a></li>
+</ol>
+
+]]></content>
+  </entry>
+  
+</feed>

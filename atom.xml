@@ -1,16 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[My Octopress Blog]]></title>
+  <title><![CDATA[Putshello developer blog]]></title>
   <link href="http://sd-kin.github.io/atom.xml" rel="self"/>
   <link href="http://sd-kin.github.io/"/>
-  <updated>2017-03-25T08:19:39+03:00</updated>
+  <updated>2017-03-25T09:01:23+03:00</updated>
   <id>http://sd-kin.github.io/</id>
   <author>
-    <name><![CDATA[Your Name]]></name>
+    <name><![CDATA[Dmitry Sidorov]]></name>
     
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Rails With Paperclip and GCS]]></title>
+    <link href="http://sd-kin.github.io/blog/2017/03/25/using-paperclclip-with-google-cloud-storage-and-custom-subdomain-to-serve-static-assets/"/>
+    <updated>2017-03-25T08:39:57+03:00</updated>
+    <id>http://sd-kin.github.io/blog/2017/03/25/using-paperclclip-with-google-cloud-storage-and-custom-subdomain-to-serve-static-assets</id>
+    <content type="html"><![CDATA[<h2>How to serve images from your custom subdomain using paperclip with google cloud as storage.</h2>
+
+<ol>
+<li>Register own domain name.</li>
+<li>Create Google cloud storage account.</li>
+<li>Create your GCS bucket with name of your subdomain for serving static files, for example <code>static.my_domain.com</code>.</li>
+<li>Add your custom domain to google account and verify ownership.</li>
+<li>Create CNAME record for your custom subdomain for serving static files linking to <code>c.storage.googleapis.com</code> For example: <code>static.my_domain.com CNAME c.storage.googleapis.com</code>. <a href="https://cloud.google.com/storage/docs/xml-api/reference-uris">Documentation</a></li>
+<li>Add paperclip to your project as shown in offitial documentation.</li>
+<li>Add gem <code>fog</code> to your gemfile.</li>
+<li>Configure paperclip in <code>config/environments/production.rb</code></li>
+</ol>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'> <span class="n">config</span><span class="o">.</span><span class="n">paperclip_defaults</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>    <span class="ss">storage</span><span class="p">:</span> <span class="ss">:fog</span><span class="p">,</span>
+</span><span class='line'>    <span class="ss">fog_credentials</span><span class="p">:</span> <span class="p">{</span>
+</span><span class='line'>      <span class="ss">provider</span><span class="p">:</span> <span class="s1">&#39;Google&#39;</span><span class="p">,</span>
+</span><span class='line'>      <span class="ss">google_storage_access_key_id</span><span class="p">:</span> <span class="no">ENV</span><span class="o">[</span><span class="s1">&#39;GOOGLE_STORAGE_ACCESS_KEY_ID&#39;</span><span class="o">]</span><span class="p">,</span>
+</span><span class='line'>      <span class="ss">google_storage_secret_access_key</span><span class="p">:</span> <span class="no">ENV</span><span class="o">[</span><span class="s1">&#39;GOOGLE_STORAGE_SECRET_ACCESS_KEY&#39;</span><span class="o">]</span><span class="p">,</span>
+</span><span class='line'>      <span class="ss">path_style</span><span class="p">:</span> <span class="kp">true</span>
+</span><span class='line'>    <span class="p">},</span>
+</span><span class='line'>    <span class="ss">fog_directory</span><span class="p">:</span> <span class="no">ENV</span><span class="o">[</span><span class="s1">&#39;GOOGLE_STORAGE_BUCKET_NAME&#39;</span><span class="o">]</span><span class="p">,</span>
+</span><span class='line'>    <span class="ss">fog_host</span><span class="p">:</span> <span class="s2">&quot;http://</span><span class="si">#{</span><span class="no">ENV</span><span class="o">[</span><span class="s1">&#39;GOOGLE_STORAGE_BUCKET_NAME&#39;</span><span class="o">]</span><span class="si">}</span><span class="s2">&quot;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>path_style: true</code> needed to pass SSL sertificate check. <a href="https://github.com/fog/fog/issues/2834">Reference.</a></p>
+]]></content>
+  </entry>
   
 </feed>
